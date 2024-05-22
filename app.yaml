@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: coding-snacks-helidon-restservice-docker
+  labels:
+    app: coding-snacks-helidon-restservice-docker
+spec:
+  type: ClusterIP
+  selector:
+    app: coding-snacks-helidon-restservice-docker
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: coding-snacks-helidon-restservice-docker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coding-snacks-helidon-restservice-docker
+  template:
+    metadata:
+      labels:
+        app: coding-snacks-helidon-restservice-docker
+        version: v1
+    spec:
+      containers:
+      - name: coding-snacks-helidon-restservice-docker
+        image: coding-snacks-helidon-restservice-docker
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
